@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: ${PASTEHUB_DB_URL}
+    username: ${PASTEHUB_DB_USERNAME}
+    password: ${PASTEHUB_DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  data:
+    redis:
+      host: ${PASTEHUB_REDIS_HOST}
+      port: ${PASTEHUB_REDIS_PORT:6379}

@@ -1,0 +1,1 @@
+<template><section class="hero result-page" aria-labelledby="unavailable-title"><p class="eyebrow">临时投递</p><h1 id="unavailable-title">这条内容已经<br />不在这里了。</h1><p class="subtitle">它可能已过期或被创建者删除。临时内容无法恢复。</p><RouterLink class="home-button" to="/">创建新的投递</RouterLink></section></template>

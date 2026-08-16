@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: pastehub-api
+  datasource:
+    url: jdbc:h2:mem:pastehub;MODE=MySQL;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+  data:
+    redis:
+      host: ${PASTEHUB_REDIS_HOST:localhost}
+      port: ${PASTEHUB_REDIS_PORT:6379}
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+pastehub:
+  rate-limit:
+    enabled: ${PASTEHUB_RATE_LIMIT_ENABLED:false}
+    window-seconds: ${PASTEHUB_RATE_LIMIT_WINDOW_SECONDS:60}
+    text-create-limit: ${PASTEHUB_RATE_LIMIT_TEXT_CREATE:10}
+    image-init-limit: ${PASTEHUB_RATE_LIMIT_IMAGE_INIT:10}
+    image-complete-limit: ${PASTEHUB_RATE_LIMIT_IMAGE_COMPLETE:20}
+    delete-limit: ${PASTEHUB_RATE_LIMIT_DELETE:20}
+    trusted-proxies: ${PASTEHUB_TRUSTED_PROXIES:}
+  s3:
+    endpoint: ${PASTEHUB_S3_ENDPOINT:http://localhost:8333}
+    access-key: ${PASTEHUB_S3_ACCESS_KEY:pastehub}
+    secret-key: ${PASTEHUB_S3_SECRET_KEY:pastehub-secret}
+    bucket: ${PASTEHUB_S3_BUCKET:pastehub}

@@ -1,0 +1,54 @@
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: pastehub
+      MYSQL_USER: pastehub
+      MYSQL_PASSWORD: pastehub
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-upastehub", "-ppastehub"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  seaweed-master:
+    image: chrislusf/seaweedfs:latest
+    command: master -ip=seaweed-master -port=9333
+    ports:
+      - "9333:9333"
+  seaweed-volume:
+    image: chrislusf/seaweedfs:latest
+    command: volume -mserver=seaweed-master:9333 -port=8080
+    depends_on:
+      - seaweed-master
+  seaweed-filer:
+    image: chrislusf/seaweedfs:latest
+    command: filer -master=seaweed-master:9333
+    depends_on:
+      - seaweed-master
+      - seaweed-volume
+  seaweed-s3:
+    image: chrislusf/seaweedfs:latest
+    command: s3 -filer=seaweed-filer:8888 -port=8333
+    depends_on:
+      - seaweed-filer
+    ports:
+      - "8333:8333"
+volumes:
+  mysql-data:
+  redis-data:

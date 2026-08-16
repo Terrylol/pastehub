@@ -1,0 +1,2 @@
+package app.pastehub.api.image; import org.springframework.http.*; import org.springframework.web.bind.annotation.*;
+@RestControllerAdvice(assignableTypes=ImageTransferController.class) class ImageExceptionHandler { @ExceptionHandler(ImageUnavailableException.class) ResponseEntity<?> unavailable(){return ResponseEntity.status(404).body(java.util.Map.of("code","TRANSFER_UNAVAILABLE"));} @ExceptionHandler(InvalidImageException.class) ResponseEntity<?> invalid(){return ResponseEntity.badRequest().body(java.util.Map.of("code","IMAGE_INVALID"));} }
